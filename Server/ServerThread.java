@@ -1,9 +1,10 @@
+package Server;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;  
-import java.io.IOException;  
-import java.io.InputStream;  
-import java.io.OutputStream;  
-import java.net.Socket;  
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import static Server.Myserver.list;
+import static Server.server.list;
 
 public class ServerThread extends Thread{  
       
@@ -59,6 +60,7 @@ public class ServerThread extends Thread{
 //             System.out.println(value);
                 //????????????  
                 for (int i = 0; i < list.size(); i++) {
+                  
                     ServerThread st = list.get(i);
                     if(st!=this){  
                         st.dos.write(value);  
@@ -71,14 +73,14 @@ public class ServerThread extends Thread{
         }
         catch (SocketException e) {
             try {
-                Myserver.list.remove(this);
-                Myserver.username.remove(name);
+                server.list.remove(this);
+                server.username.remove(name);
                 this.tablePanel.data.remove(vs);
                 this.tablePanel.table.updateUI();
                 System.out.println(name + " has left.");
                 
-                for (int i = 0; i < Myserver.list.size(); i++) {
-                    ServerThread st = Myserver.list.get(i);
+                for (int i = 0; i < server.list.size(); i++) {
+                    ServerThread st = server.list.get(i);
                     OutputStream new_ous = st.socket.getOutputStream();
                     DataOutputStream new_dos= new DataOutputStream(new_ous);
                     new_dos.writeByte(15);
